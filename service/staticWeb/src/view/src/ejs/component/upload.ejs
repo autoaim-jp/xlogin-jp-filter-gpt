@@ -1,0 +1,26 @@
+<div id='uploadTabContainer' class='hidden'>
+  <div id='uploadFilePermissionRequestContainer' class='flex justify-center hidden'>
+    <button data-id='xloginLoginBtn' data-permission='rw:$CLIENT_ID:file_v1' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+  </div>
+
+  <div id='uploadContainer' class='hidden max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mb-4'>
+    <h2 class='text-xl font-semibold mb-4'>ファイルアップロード</h2>
+    <form id='uploadProfileForm' action='#'>
+      <div class='mb-4'>
+        <label for='file' class='block text-gray-700 font-medium'>ファイルを選択してください</label>
+        <input id='profileImageInput' type='file' name='file' id='file' class='mt-2'>
+      </div>
+      <button type='submit' class='bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>
+        アップロード
+      </button>
+    </form>
+  </div>
+
+  <div id='uploadedImgContainer' class='hidden max-w-md mx-auto flex justify-center items-center bg-gray-100'>
+    <div class='max-w-md bg-white p-8 rounded-lg shadow-md text-center'>
+      <img id='uploadedImg' src='#' class='w-32 h-32 rounded-full mx-auto mb-4'>
+      <p class='text-gray-700'>Uploaded Image</p>
+    </div>
+  </div>
+
+</div>

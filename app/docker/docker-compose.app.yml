@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  redis_container:
+    container_name: xlogin-jp-filter-gpt-container-redis
+    build:
+      context: ../../
+      dockerfile: ./service/redis/docker/Dockerfile
+    volumes:
+      - xlcs-rc-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+
+
+  static_web_container:
+    container_name: xlogin-jp-filter-gpt-container-static-web
+    build:
+      context: ../../
+      dockerfile: ./service/staticWeb/docker/Dockerfile
+    tty: true
+    ports:
+      - 127.0.0.1:3005:3005
+    volumes:
+      - ../../service/staticWeb/src:/app
+      - xlcs-wsc-nm:/app/node_modules
+    depends_on:
+      redis_container: 
+        condition: service_healthy
+    command: sh -c "rm /tmp/setup.done || true && yarn run start-watch"
+    healthcheck:
+      test: ls /tmp/setup.done
+      interval: 5s
+      timeout : 5s
+      retries: 10
+
+volumes:
+  xlcs-rc-redis:
+  xlcs-wsc-nm:
+

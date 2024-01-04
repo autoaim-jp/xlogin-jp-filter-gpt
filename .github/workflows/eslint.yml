@@ -1,0 +1,28 @@
+name: eslint
+on: [push]
+jobs:
+  eslint:
+    name: GitHub Actions eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run init
+        run: make init
+      - name: Run eslint
+        run: make lint
+
+  slack-notification:
+    if: always()
+    needs:  eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v1
+      - name: Slack Notification
+        uses: sonots/slack-notice-action@v3
+        with:
+          title: eslint (${{ github.event.repository.name }})
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.MY_GITHUB_CHANNEL_WEBHOOK_URL }}
+

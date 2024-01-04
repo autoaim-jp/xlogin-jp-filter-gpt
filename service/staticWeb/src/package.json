@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "@types/multer": "^1.4.7",
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "connect-redis": "^6.1.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "form-data": "^4.0.0",
+    "helmet": "^5.1.0",
+    "ioredis": "^5.0.5",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.22",
+    "winston": "^3.11.0"
+  },
+  "scripts": {
+    "start-watch": "nodemon --delay 1 app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "node ./xdevkit/tool/src/compile.js --js ./view/src/js/ --css ./view/src/css/ --ejs ./view/src/ejs/page/ --ejs-component ./view/src/ejs/component/ --out ./view/build/ --ejs-config ../../../view/src/config/ejs.config.js --tailwindcss-config ./view/src/config/tailwind.config.cjs --tailwindcss-file ./view/src/css/tailwind.css --js-ignore _lib,_setting --command compile",
+    "compile-minify": "node ./xdevkit/tool/src/compile.js --js ./view/src/js/ --css ./view/src/css/ --ejs ./view/src/ejs/page/ --ejs-component ./view/src/ejs/component/ --out ./view/build/ --ejs-config ../../../view/src/config/ejs.config.js --tailwindcss-config ./view/src/config/tailwind.config.cjs --tailwindcss-file ./view/src/css/tailwind.css --js-ignore _lib,_setting --command compile --minify",
+    "watch": "node ./xdevkit/tool/src/compile.js --js ./view/src/js/ --css ./view/src/css/ --ejs ./view/src/ejs/page/ --ejs-component ./view/src/ejs/component/ --out ./view/build/ --ejs-config ../../../view/src/config/ejs.config.js --tailwindcss-config ./view/src/config/tailwind.config.cjs --tailwindcss-file ./view/src/css/tailwind.css --js-ignore _lib,_setting --command watch"
+  },
+  "type": "module"
+}

@@ -1,0 +1,24 @@
+<%- include(`${xdevkitComponentPath}head.ejs`, { title, description, author, })  %>
+  <%- include(`${xdevkitComponentPath}includeCss.ejs`, { inlineCssList, externalCssList, isProduction, })  %>
+  <body class='flex flex-col'>
+
+    <%- include(`${componentPath}nav.ejs`)  %>
+    <%- include(`${xdevkitComponentPath}notification.ejs`)  %>
+    <%- include(`${xdevkitComponentPath}breadcrumb.ejs`, { breadcrumbList })  %>
+    <div class='section1 min-h-80 flex flex-col text-center text-black md:flex items-center justify-center flex-grow p-16'>
+     <div class='font-bold text-4xl max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full'>
+        <div class=''>
+          <p>Error</p>
+          <a href='/'>トップページ</a>
+        </div>
+      </div>
+
+    </div><!-- section1 -->
+
+    <%- include(`${xdevkitComponentPath}loading.ejs`)  %>
+    <%- include(`${xdevkitComponentPath}modal.ejs`)  %>
+    <div id='hiddenForTailwindByJs' class='hidden w-full h-96 p-1'></div>
+  </body>
+  <%- include(`${xdevkitComponentPath}includeJs.ejs`, { inlineScriptList, externalScriptList, isProduction, })  %>
+
+

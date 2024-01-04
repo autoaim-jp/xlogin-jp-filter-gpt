@@ -1,0 +1,39 @@
+    <nav class='w-full z-30 top-0 py-1'>
+      <div class='max-w-3xl container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2'>
+
+        <div class='pl-4 flex items-center'>
+          <a class='font-bold text-2xl' href='/'>
+            <img class='inline-block align-text-top' src='/img/logo.webp' width='48px' height='48px'>
+            <div class='inline-block ml-2'>
+              <span>sample.xlogin.jp</span>
+              <br />
+              <span class='text-sm'>simple login client sample</span>
+            </div>
+          </a>
+        </div>
+
+        <div class='pl-4 flex items-center z-40'>
+          <div class='block xl:hidden pr-4'>
+            <button id='commonNavToggle' class='flex items-center px-3 py-2 rounded appearance-none bg-white focus:outline-none'>
+              <svg viewBox='0 0 100 80' width='40' height='70'>
+                <rect width='100' height='20'></rect>
+                <rect y='30' width='100' height='20'></rect>
+                <rect y='60' width='100' height='20'></rect>
+                <text x='50%' y='90' text-anchor='middle' dominant-baseline='central' font-family='Meiryo' font-size='30'>Menu</text>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class='xl:relative absolute w-full left-0 xl:top-auto top-24 flex items-center grid xl:w-auto'>
+          <div class='xl:flex xl:items-center xl:w-auto xl:block mt-2 xl:mt-0 p-1 xl:p-0 z-20 bg-gray-100 border-2 xl:bg-transparent xl:border-0 rounded hidden' id='commonNavContent'>
+            <ul class='lg:flex justify-end flex-1 xl:flex-row flex-col items-center text-center text-xl'>
+              <li class='xl:m-0 mr-3 mt-2 w-full border-b-2 border-white'><a data-id='notificationBtn' class='inline-block py-2 px-4 font-bold no-underline' href='#'>Notification</a></li>
+              <li class='xl:m-0 mr-3 mt-2 w-full border-b-2 border-white'><a class='inline-block py-2 px-4 font-bold no-underline' href='https://github.com/autoaim-jp/xlogin-jp-client-sample' target='_blank'>GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+

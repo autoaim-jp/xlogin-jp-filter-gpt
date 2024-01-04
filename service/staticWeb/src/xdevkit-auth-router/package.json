@@ -1,0 +1,18 @@
+{
+  "name": "xdevkit-auth-router",
+  "version": "0.9",
+  "main": "src/app.js",
+  "repository": "git@github.com:/autoaim-jp/xdevkit-auth-router.git",
+  "author": "autoaim_jp <git@autoaim.jp>",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules yarn jest test/"
+  },
+  "type": "module",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "connect-redis": "^6.1.3",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "ioredis": "^5.2.2"
+  }
+}

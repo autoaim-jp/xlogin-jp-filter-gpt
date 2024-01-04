@@ -1,0 +1,184 @@
+<html lang='ja'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <title>mypage | sample.xlogin.jp</title>
+    <meta name='author' content='autoaim_jp'>
+    <meta name='description' content='mypage'>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel='apple-touch-icon' sizes='180x180' href='/img/logo/apple-touch-icon.webp'>
+    <link rel='icon' type='image/webp' sizes='32x32' href='/img/logo/favicon-32x32.webp'>
+    <link rel='icon' type='image/webp' sizes='16x16' href='/img/logo/favicon-16x16.webp'>
+    <link rel='mask-icon' href='/img/logo/safari-pinned-tab.svg' color='#5bbad5'>
+    <link rel='shortcut icon' href='/img/logo/favicon.ico'>
+    <meta name='msapplication-TileColor' content='#ffffff'>
+    <meta name='theme-color' content='#ffffff'>
+    <link href='/css/tailwind.css' rel='stylesheet' />
+
+<body class='flex flex-col'>
+    <nav class='w-full z-30 top-0 py-1'>
+        <div class='max-w-3xl container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2'>
+            <div class='pl-4 flex items-center'>
+                <a class='font-bold text-2xl' href='/'>
+                    <img class='inline-block align-text-top' src='/img/logo.webp' width='48px' height='48px'>
+                    <div class='inline-block ml-2'>
+                        <span>sample.xlogin.jp</span>
+                        <br />
+                        <span class='text-sm'>simple login client sample</span>
+                    </div>
+                </a>
+            </div>
+            <div class='pl-4 flex items-center z-40'>
+                <div class='block xl:hidden pr-4'>
+                    <button id='commonNavToggle' class='flex items-center px-3 py-2 rounded appearance-none bg-white focus:outline-none'>
+                        <svg viewBox='0 0 100 80' width='40' height='70'>
+                            <rect width='100' height='20'></rect>
+                            <rect y='30' width='100' height='20'></rect>
+                            <rect y='60' width='100' height='20'></rect>
+                            <text x='50%' y='90' text-anchor='middle' dominant-baseline='central' font-family='Meiryo' font-size='30'>Menu</text>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class='xl:relative absolute w-full left-0 xl:top-auto top-24 flex items-center grid xl:w-auto'>
+                <div class='xl:flex xl:items-center xl:w-auto xl:block mt-2 xl:mt-0 p-1 xl:p-0 z-20 bg-gray-100 border-2 xl:bg-transparent xl:border-0 rounded hidden' id='commonNavContent'>
+                    <ul class='lg:flex justify-end flex-1 xl:flex-row flex-col items-center text-center text-xl'>
+                        <li class='xl:m-0 mr-3 mt-2 w-full border-b-2 border-white'><a data-id='notificationBtn' class='inline-block py-2 px-4 font-bold no-underline' href='#'>Notification</a></li>
+                        <li class='xl:m-0 mr-3 mt-2 w-full border-b-2 border-white'><a class='inline-block py-2 px-4 font-bold no-underline' href='https://github.com/autoaim-jp/xlogin-jp-client-sample' target='_blank'>GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- https://tailwindcomponents.com/component/simple-notification -->
+    <div id='notificationContainer' class='z-50 mt-20 p-4 absolute right-0 top-0 flex-col'>
+    </div>
+    <a id='notificationTemplate' data-id='notification' class='flex flex-col block bg-white max-w-md rounded-lg p-6 shadow mb-4 w-80 hidden' href='#'>
+        <p data-id='subject' class='text-xl text-slate-700 font-medium'>Login at 2022/01/01 00:00:00</p>
+        <div class='flex justify-end'>
+            <div class='text-sm inline-flex space-x-1 items-center'>
+                <span>show detail</span>
+                <svg class='w-3 h-3' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
+                </svg>
+            </div>
+        </div>
+    </a>
+    <div class='section1 min-h-80 flex flex-col text-black md:flex items-center justify-center flex-grow p-2'>
+        <div class='max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full'>
+            <ul class='inline-flex space-x-1 md:space-x-3'>
+                <li class='inline-flex items-center'>
+                    <a href='/' class='inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'>
+                        <svg class='w-4 h-4 mr-2' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+                            <path d='M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z'></path>
+                        </svg> ホーム </a>
+                </li>
+                <li class='inline-flex items-center'>
+                    <a href='/mypage' class='inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'>
+                        <svg class='w-6 h-6 text-gray-400' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+                            <path fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd'></path>
+                        </svg> マイページ </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class='section1 min-h-80 flex flex-col text-left text-black md:flex items-center justify-center flex-grow p-16'>
+        <div class='font-bold text-3xl max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full'>
+            <h2 class='text-center mb-2'>MY PAGE</h2>
+            <!-- MIT License https://tailwind-elements.com/docs/standard/components/cards/ -->
+            <div class='flex justify-center'>
+                <div class='flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg items-center'>
+                    <img class='m-4 w-36 h-36 md:mt-0 md:h-auto object-cover md:w-48 rounded-lg' src='/img/profile.png' alt='profile img' />
+                    <div class='p-6 flex flex-col justify-start break-all'>
+                        <h5 class='text-gray-900 text-xl font-medium mb-2 text-center'>Profile</h5>
+                        <p class='text-gray-700 text-base mb-4'>ユーザー名: <span data-var='auth:userName'>取得できません</span></p>
+                        <p class='text-gray-700 text-base mb-4'>メールアドレス: <span data-var='auth:emailAddress'>取得できません</span></p>
+                        <p class='text-gray-600 text-xs'>サービスユーザーID(sample_localhost): <span data-var='sample_localhost:serviceUserId'>取得できません</span></p>
+                        <p class='text-gray-600 text-xs'>サービスユーザーID(sample_xlogin_jp): <span data-var='sample_xlogin_jp:serviceUserId'>取得できません</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- section1 -->
+    <div class='section1 min-h-80 flex flex-row text-left text-black md:flex items-center justify-center flex-grow p-16'>
+        <div class='font-bold text-3xl max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full flex flex-col justify-center'>
+            <div id='tabMenuContainerWrap' class='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-4'>
+            </div>
+            <div class='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700'>
+                <div id='editorTabContainer' class='hidden'>
+                    <h5 class='block mb-2 text-sm text-center'>INTRODUCTION</h5>
+                    <div id='filePermissionRequestContainer' class='flex justify-center hidden'>
+                        <button id='filePermissionRequestBtn' data-id='xloginLoginBtn' data-permission='rw:$CLIENT_ID:json_v1' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+                    </div>
+                    <div id='editorContainer' class='hidden'>
+                        <textarea id='messageContent' rows='4' class='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4' placeholder='hi everyone!'></textarea>
+                        <div class='flex justify-between w-full'>
+                            <button id='saveMessageBtn' class='w-60 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>save introduction</button>
+                            <button id='deleteMessageBtn' class='w-60 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>delete introduction</button>
+                        </div>
+                    </div>
+                </div>
+                <div id='timerTabContainer' class='hidden'>
+                    <button id='addTimerBtn' class='w-60 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>start timer</button>
+                </div>
+                <div id='backupEmailAddressFormTabContainer' class='hidden flex justify-center'>
+                    <div id='backupEmailAddressPermissionRequestContainer' class='flex justify-center hidden'>
+                        <button id='backupEmailAddressPermissionRequestBtn' data-id='xloginLoginBtn' data-permission='rw:auth:backupEmailAddress' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+                    </div>
+                    <form id='backupEmailAddressForm' class='flex w-full hidden'>
+                        <div class='flex w-full group flex-col'>
+                            <label for='backupEmailAddressInput' class='text-sm text-gray-500 dark:text-gray-400'>Backup Email address</label>
+                            <input id='backupEmailAddressInput' type='email' class='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer' placeholder='' required />
+                        </div>
+                        <button type='submit' class='flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto p-4 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Submit</button>
+                    </form>
+                </div>
+                <div id='uploadTabContainer' class='hidden'>
+                    <div id='uploadFilePermissionRequestContainer' class='flex justify-center hidden'>
+                        <button data-id='xloginLoginBtn' data-permission='rw:$CLIENT_ID:file_v1' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+                    </div>
+                    <div id='uploadContainer' class='hidden max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mb-4'>
+                        <h2 class='text-xl font-semibold mb-4'>ファイルアップロード</h2>
+                        <form id='uploadProfileForm' action='#'>
+                            <div class='mb-4'>
+                                <label for='file' class='block text-gray-700 font-medium'>ファイルを選択してください</label>
+                                <input id='profileImageInput' type='file' name='file' id='file' class='mt-2'>
+                            </div>
+                            <button type='submit' class='bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600'> アップロード </button>
+                        </form>
+                    </div>
+                    <div id='uploadedImgContainer' class='hidden max-w-md mx-auto flex justify-center items-center bg-gray-100'>
+                        <div class='max-w-md bg-white p-8 rounded-lg shadow-md text-center'>
+                            <img id='uploadedImg' src='#' class='w-32 h-32 rounded-full mx-auto mb-4'>
+                            <p class='text-gray-700'>Uploaded Image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <ul id='tabMenuContainerTemplate' class='hidden flex flex-wrap -mb-px flex-row justify-center'>
+    </ul>
+    <li id='tabItemTemplate' class='hidden mr-2'><a href='#' class='inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'></a></li>
+    <li id='tabActiveItemTemplate' class='hidden mr-2'><a href='#' class='inline-block p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600 active dark:text-blue-500 dark:border-blue-500'></a></li>
+    <img id='loading' class='fixed -translate-x-1/2 -translate-y-1/2 inset-1/2 transform hidden' src='/img/loading.svg' />
+    <div id='modalBackground' data-id='modalClose' class='fixed bg-white bg-opacity-50 w-full h-full z-40 inset-0 hidden'></div>
+    <div id='modalTemplate' data-id='modal' class='transition-opacity duration-500 fixed w-11/12 lg:w-5/12 h-full left-0 right-0 m-auto flex font-extrabold z-50 hidden'>
+        <div data-id='modalCard' class='card relative m-auto w-4/5 shadow-lg rounded-2xl'>
+            <div class='p-4 bg-gray-200 text-black rounded-t-2xl'>
+                <span data-id='modalClose' class='float-right text-lg font-bold hover:text-gray-500 no-underline cursor-pointer'>&times;</span>
+                <h2 data-id='modalTitle'>Modal Title</h2>
+            </div>
+            <div data-id='modalContent' class='p-8 bg-gray-100'>
+            </div>
+            <div class='p-2 text-white bg-gray-200 flex justify-end rounded-b-2xl'>
+                <button data-id='modalCancelButton' class='bg-gray-800 hover:underline font-extrabold rounded py-4 px-8 shadow'> キャンセル </button>
+                <button data-id='modalConfirmButton' class='bg-green-400 hover:underline font-extrabold rounded py-4 px-8 ml-2 shadow'> 確認 </button>
+            </div>
+        </div>
+    </div>
+    <div id='hiddenForTailwindByJs' class='hidden w-full h-96 p-1'></div>
+</body>
+<script type='module' src='/js/mypage/app.js'></script>
