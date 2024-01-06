@@ -1,30 +1,25 @@
-export const getOnClickAddTimerButton = ({ addTimer }) => {
-  return () => {
-    addTimer()
-  }
-}
+export const getOnSubmitSendPromptForm = ({
+  sendPrompt, getPromptValue, clearPromptValue, fetchChatList, appendChatList, updateChatList, loadChatHistory,
+}) => {
+  return async () => {
+    const sendPromptResult = await sendPrompt()
+    console.log({ sendPromptResult })
+    const { requestId, promptChatId, responseChatId } = sendPromptResult.result
 
-export const getOnClickSaveMessageButton = ({ saveMessage }) => {
-  return () => {
-    saveMessage()
-  }
-}
+    const chatListResult = await fetchChatList()
+    console.log({ chatListResult })
+    const { chatList } = chatListResult.result
 
-export const getOnClickDeleteMessageButton = ({ deleteMessage }) => {
-  return () => {
-    deleteMessage()
-  }
-}
+    const newChatList = appendChatList({
+      getPromptValue, chatList, promptChatId, responseChatId, requestId,
+    })
 
-export const getOnSubmitBackupEmailAddress = ({ saveBackupEmailAddress }) => {
-  return () => {
-    saveBackupEmailAddress()
-  }
-}
+    const updateChatListResult = await updateChatList({ newChatList })
+    console.log({ updateChatListResult })
 
-export const getOnSubmitUploadForm = ({ uploadFile }) => {
-  return () => {
-    uploadFile()
+    clearPromptValue()
+
+    loadChatHistory()
   }
 }
 

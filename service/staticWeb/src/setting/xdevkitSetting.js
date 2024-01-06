@@ -14,7 +14,7 @@ setting.api.STATE_L = 64
 setting.api.CODE_VERIFIER_L = 64
 setting.api.XLOGIN_RESPONSE_TYPE = 'code'
 setting.api.XLOGIN_CODE_CHALLENGE_METHOD = 'S256'
-setting.api.SCOPE = 'r:auth:emailAddress,rw:auth:backupEmailAddress,*r:auth:userName,*r:$CLIENT_ID:serviceUserId,*rw:$CLIENT_ID:notification,rw:$CLIENT_ID:file_v1,rw:$CLIENT_ID:json_v1'
+setting.api.SCOPE = 'r:auth:emailAddress,rw:auth:backupEmailAddress,*r:auth:userName,*r:$CLIENT_ID:serviceUserId,*rw:$CLIENT_ID:notification,rw:$CLIENT_ID:json_v1,rw:$CLIENT_ID:chatgpt'
 
 setting.url = {}
 setting.url.ERROR_PAGE = '/error'

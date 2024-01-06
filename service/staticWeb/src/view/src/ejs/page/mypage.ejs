@@ -5,28 +5,48 @@
     <%- include(`${componentPath}nav.ejs`)  %>
     <%- include(`${xdevkitComponentPath}notification.ejs`)  %>
     <%- include(`${xdevkitComponentPath}breadcrumb.ejs`, { breadcrumbList })  %>
-    <div class='section1 min-h-80 flex flex-col text-left text-black md:flex items-center justify-center flex-grow p-16'>
-      <div class='font-bold text-3xl max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full'>
-        <h2 class='text-center mb-2'>MY PAGE</h2>
-        <%- include(`${componentPath}profile.ejs`)  %>
-      </div>
-    </div><!-- section1 -->
+    <div class='section1 flex flex-row text-left text-black md:flex items-center justify-center flex-grow'>
+      <div class='max-w-3xl bg-gray-100 p-6 rounded shadow-xl w-full mx-auto flex flex-col justify-center'>
+        <h2>ChatGPT Sample Client</h2>
+        <div class='bg-white rounded-lg shadow p-4 mb-4 flex flex-col h-screen'>
+          <div class='flex items-center mb-4'>
+            <div class='w-12 h-12 bg-gray-400 rounded-full flex-shrink-0'></div>
+            <div class='ml-2'>
+              <p class='font-semibold text-gray-800'>ChatGPT</p>
+            </div>
+          </div>
 
-    <div class='section1 min-h-80 flex flex-row text-left text-black md:flex items-center justify-center flex-grow p-16'>
-      <div class='font-bold text-3xl max-w-lg bg-gray-100 p-6 rounded shadow-xl max-w-4xl w-full flex flex-col justify-center'>
-        <div id='tabMenuContainerWrap'class='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-4'>
-        </div>
-        <div class='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700'>
-          <%- include(`${componentPath}editor.ejs`)  %>
-          <%- include(`${componentPath}timer.ejs`)  %>
-          <%- include(`${componentPath}backupEmailAddressForm.ejs`)  %>
-          <%- include(`${componentPath}upload.ejs`)  %>
-        </div>
+          <div id='chatArea' class='overflow-y-auto mb-4 flex-grow hidden'> 
+          </div>
+          <div id='jsonPermissionRequestContainer' class='flex justify-center mb-4 hidden'>
+            <button id='jsonPermissionRequestBtn' data-id='xloginLoginBtn' data-permission='rw:$CLIENT_ID:json_v1' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+          </div>
+
+          <form id='sendPromptForm' class='flex items-center hidden' action='#'>
+            <input id='sendPromptInput' type='text' class='flex-grow p-2 rounded border border-gray-300 mr-2 focus:outline-none' placeholder='メッセージを入力...'>
+            <button id='sendPromptBtn' type='submit' class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'>送信</button>
+          </form>
+          <div id='chatgptPermissionRequestContainer' class='flex justify-center hidden'>
+            <button id='chatgptPermissionRequestBtn' data-id='xloginLoginBtn' data-permission='rw:$CLIENT_ID:chatgpt' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>XLogin</button>
+          </div>
+
         </div>
       </div>
     </div>
 
-    <%- include(`${xdevkitComponentPath}tab.ejs`)  %>
+    <div id='rightMessageTemplate' class='flex items-end justify-end mb-2 hidden'>
+      <div class='bg-green-100 p-2 rounded-lg'>
+        <p data-id='messageBody' class='text-gray-800'>自分のメッセージ</p>
+      </div>
+      <div class='w-8 h-8 bg-gray-400 rounded-full flex-shrink-0'></div>
+    </div>
+
+    <div id='leftMessageTemplate' class='flex items-start mb-2 hidden'>
+      <div class='w-8 h-8 bg-gray-400 rounded-full flex-shrink-0'></div>
+      <div class='ml-2 bg-red-200 p-2 rounded-lg'>
+        <p data-id='messageBody' class='text-gray-800'>相手のメッセージ</p>
+      </div>
+    </div>
     <%- include(`${xdevkitComponentPath}loading.ejs`)  %>
     <%- include(`${xdevkitComponentPath}modal.ejs`)  %>
     <div id='hiddenForTailwindByJs' class='hidden w-full h-96 p-1'></div>

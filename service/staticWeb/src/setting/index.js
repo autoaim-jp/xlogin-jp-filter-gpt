@@ -12,7 +12,7 @@ setting.key = {}
 setting.key.FILE_UPLOAD = 'file'
 
 setting.user = {}
-setting.user.MESSAGE_FILE_PATH = '/message.txt'
+setting.user.CHATGPT_FILE_PATH = '/chatgpt/history.json'
 setting.user.PROFILE_FILE_PATH_WITHOUT_EXT = '/upload/mypage'
 
 setting.xdevkitSetting = xdevkitSetting

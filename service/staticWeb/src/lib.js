@@ -1,12 +1,12 @@
 /* /lib.js */
 const mod = {}
 
-const init = (axios, http, https, crypto, winston) => {
+const init = (axios, http, https, crypto, ulid) => {
   mod.crypto = crypto
   mod.http = http
   mod.https = https
   mod.axios = axios
-  mod.winston = winston
+  mod.ulid = ulid
 }
 
 const objToQuery = (obj) => {
@@ -173,67 +173,14 @@ const postFormRequest = (clientId, accessToken, origin, path, formData) => {
       })
     })
     request.on('error', (err) => {
-      logger.error('postFormRequest', { err })
+      console.log('err', err)
       resolve(null)
     })
   })
 }
 
-/**
- * 名前付きの引数を展開する
- *
- * @param {Object} obj
- * @return {object} 名前がついている引数を展開したもの
- * @memberof lib
- */
-const _argNamed = (obj) => {
-  const flattened = {}
-
-  Object.keys(obj).forEach((key) => {
-    if (Array.isArray(obj[key])) {
-      Object.assign(flattened, obj[key].reduce((prev, curr) => {
-        if (typeof curr === 'undefined') {
-          throw new Error(`[error] flat argument by list can only contain function but: ${typeof curr} @${key}\n===== maybe you need make func exported like  module.exports = { func, } =====`)
-        } else if (typeof curr === 'function') {
-          prev[curr.name] = curr
-        } else {
-          throw new Error(`[error] flat argument by list can only contain function but: ${typeof curr} @${key}`)
-        }
-        return prev
-      }, {}))
-    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-      Object.assign(flattened, obj[key])
-    } else {
-      flattened[key] = obj[key]
-    }
-  })
-
-  return flattened
-}
-
-const _createGlobalLogger = ({ SERVICE_NAME }) => {
-  const logger = mod.winston.createLogger({
-    level: 'info',
-    format: mod.winston.format.json(),
-    defaultMeta: { service: SERVICE_NAME },
-    transports: [
-      new mod.winston.transports.Console({ level: 'debug' }),
-      new mod.winston.transports.File({ filename: 'log/combined.log', level: 'info' }),
-    ],
-  })
-  return logger
-}
-
-
-/**
- * グローバルの関数をセットする。
- *
- * @return {undefined} 戻り値なし
- * @memberof lib
- */
-const monkeyPatch = ({ SERVICE_NAME }) => {
-  global.argNamed = _argNamed
-  global.logger = _createGlobalLogger({ SERVICE_NAME })
+const getUlid = () => {
+  return mod.ulid()
 }
 
 
@@ -246,6 +193,6 @@ export default {
   getFileRequest,
   postFormRequest,
 
-  monkeyPatch,
+  getUlid,
 }
 

@@ -18,151 +18,97 @@ asocial.lib = lib
 /* a is an alias of asocial */
 const a = asocial
 
-const loadProfile = async () => {
-  const userInfoResult = await a.input.fetchUserProfile(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
-    lib: [a.lib.common.input.getRequest],
-  }))
-  a.lib.redirect(userInfoResult)
-  a.output.showUserProfile(argNamed({
-    lib: [a.lib.xdevkit.output.applyElmList],
-    other: { userInfoResult },
-  }))
-  return userInfoResult
-}
-
-const loadTimerBtn = async () => {
-  const addTimer = a.output.getAddTimer(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
-    lib: [a.lib.common.output.postRequest],
-  }))
-
-  const onClickAddTimerButton = a.action.getOnClickAddTimerButton(argNamed({
-    output: { addTimer },
-  }))
-  a.output.setOnClickAddTimerButton(argNamed({
-    onClick: { onClickAddTimerButton },
-  }))
-}
-
 const showNotification = () => {
   setInterval(() => {
     a.lib.common.output.showNotification(a.setting.browserServerSetting.getValue('apiEndpoint'), a.lib.xdevkit.output.showModal, a.lib.common.input.getRequest)
   }, 30 * 1000)
 }
 
-const loadMessageContent = async () => {
-  const messageResult = await a.input.fetchMessage(argNamed({
+const loadPromptForm = () => {
+  const sendPrompt = a.output.getSendPrompt(argNamed({
+    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+    input: [a.input.getPromptValue],
+    lib: [a.lib.common.output.postRequest],
+  }))
+
+  const updateChatList = a.output.getUpdateChatList(argNamed({
+    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+    lib: [a.lib.common.output.postRequest],
+  }))
+
+  const fetchChatList = a.input.getFetchChatList(argNamed({
     browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
     lib: [a.lib.common.input.getRequest],
   }))
 
-  a.output.showMessage(argNamed({
-    param: { messageResult },
+  const onSubmitSendPromptForm = a.action.getOnSubmitSendPromptForm(argNamed({
+    input: [a.input.getPromptValue],
+    input2: { fetchChatList },
+    output: [a.output.clearPromptValue],
+    output2: { sendPrompt, updateChatList },
+    core: [a.core.appendChatList],
+    app: [a.app.loadChatHistory],
+  }))
+  a.output.setOnSubmitSendPromptForm(argNamed({
+    onSubmit: { onSubmitSendPromptForm },
   }))
 }
 
-const loadMessageBtn = () => {
-  const saveMessage = a.output.getSaveMessage(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
-    lib: [a.lib.common.output.postRequest],
-  }))
-  const onClickSaveMessageButton = a.action.getOnClickSaveMessageButton(argNamed({
-    output: { saveMessage },
-  }))
-  a.output.setOnClickSaveMessageButton(argNamed({
-    onClick: { onClickSaveMessageButton },
-  }))
-
-  const deleteMessage = a.output.getDeleteMessage(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
-    lib: [a.lib.common.output.postRequest],
-  }))
-  const onClickDeleteMessageButton = a.action.getOnClickDeleteMessageButton(argNamed({
-    output: { deleteMessage },
-  }))
-  a.output.setOnClickDeleteMessageButton(argNamed({
-    onClick: { onClickDeleteMessageButton },
-  }))
-}
-
-const loadUploadForm = () => {
-  const uploadFile = a.output.getUploadFile(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
-    lib: [a.lib.common.output.postFormRequest],
-  }))
-
-  const onSubmitUploadForm = a.action.getOnSubmitUploadForm(argNamed({
-    output: { uploadFile },
-  }))
-
-  a.output.setOnSubmitUploadForm(argNamed({
-    onSubmit: { onSubmitUploadForm },
-  }))
-
-
-  const fetchUploadedFileList = a.input.getFetchUploadedFileList(argNamed({
+const loadChatHistory = async () => {
+  const fetchChatList = a.input.getFetchChatList(argNamed({
     browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
     lib: [a.lib.common.input.getRequest],
   }))
 
-  const loadUploadedImg = a.output.getLoadUploadedImg(argNamed({
-    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+  const chatListResult = await fetchChatList()
+
+  const simpleChatList = a.core.convertChatList(argNamed({
+    param: { chatListResult },
   }))
 
-  a.core.showUploadedImg(argNamed({
-    input: { fetchUploadedFileList },
-    output: { loadUploadedImg },
+  a.output.showChatList(argNamed({
+    param: { simpleChatList },
   }))
 }
 
 const loadPermission = async () => {
   const splitPermissionListResult = await a.lib.common.input.fetchSplitPermissionList(a.setting.browserServerSetting.getValue('apiEndpoint'))
-  a.output.showEditor(argNamed({
+  a.output.showPromptForm(argNamed({
     param: { splitPermissionListResult },
   }))
-
-  a.output.showBackupEmailAddressForm(argNamed({
-    param: { splitPermissionListResult },
-  }))
-
-  a.output.showUploadForm(argNamed({
+  a.output.showChatHistory(argNamed({
     param: { splitPermissionListResult },
   }))
 
   a.lib.xdevkit.output.reloadXloginLoginBtn(splitPermissionListResult?.result?.clientId)
 }
 
-const loadTabBtn = async () => {
-  const tabList = {
-    editorTabContainer: 'エディタ', timerTabContainer: 'タイマー', backupEmailAddressFormTabContainer: 'バックアップメールアドレス', uploadTabContainer: 'プロフィール画像',
-  }
-  const activeTabContainerId = Object.keys(tabList)[0]
-
-  a.output.addTabMenuContainer(argNamed({
-    lib: [a.lib.xdevkit.output.createTabMenuContainer, a.lib.xdevkit.output.showTabButton],
-    param: { tabList, activeTabContainerId },
-  }))
-}
-
-const loadBackupEmailAddressForm = async ({ userInfoResult }) => {
-  const backupEmailAddress = a.input.getBackupEmailAddress(argNamed({
-    param: { userInfoResult },
-  }))
-  a.output.showBackupEmailAddress(argNamed({
-    param: { backupEmailAddress },
+const startResponseLoader = async () => {
+  const fetchResponseList = a.input.getFetchResponseList(argNamed({
+    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+    lib: [a.lib.common.input.getRequest],
   }))
 
-  const saveBackupEmailAddress = a.output.getSaveBackupEmailAddress(argNamed({
+  const fetchChatList = a.input.getFetchChatList(argNamed({
+    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+    lib: [a.lib.common.input.getRequest],
+  }))
+
+  const updateChatList = a.output.getUpdateChatList(argNamed({
     browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
     lib: [a.lib.common.output.postRequest],
   }))
-  const onSubmitBackupEmailAddress = a.action.getOnSubmitBackupEmailAddress(argNamed({
-    param: { saveBackupEmailAddress },
+
+  await a.core.lookupResponse(argNamed({
+    param: { fetchResponseList, fetchChatList, updateChatList },
+    app: [a.app.loadChatHistory],
   }))
-  a.output.setOnSubmitBackupEmailAddress(argNamed({
-    param: { onSubmitBackupEmailAddress },
-  }))
+  setInterval(async () => {
+    await a.core.lookupResponse(argNamed({
+      param: { fetchResponseList, fetchChatList, updateChatList },
+      app: { loadChatHistory },
+    }))
+  }, 5 * 1000)
 }
 
 const main = async () => {
@@ -170,16 +116,16 @@ const main = async () => {
   a.lib.common.output.setOnClickNavManu()
   a.lib.monkeyPatch()
 
-  const userInfoResult = await a.app.loadProfile()
-  await a.app.loadBackupEmailAddressForm({ userInfoResult })
-  a.app.loadTimerBtn()
-  a.app.loadMessageContent()
-  a.app.loadMessageBtn()
-  a.app.loadUploadForm()
-  a.app.loadTabBtn()
-
-  a.app.showNotification()
+  console.log('loadPromptForm')
+  a.app.loadPromptForm()
+  // console.log('showNotification')
+  // a.app.showNotification()
+  console.log('loadPermission')
   a.app.loadPermission()
+  await a.app.loadChatHistory()
+
+  console.log('startResponseLoader')
+  a.app.startResponseLoader()
 
   setTimeout(() => {
     a.lib.xdevkit.output.switchLoading(false)
@@ -188,15 +134,13 @@ const main = async () => {
 
 a.app = {
   main,
-  loadProfile,
-  loadTimerBtn,
   showNotification,
-  loadMessageContent,
-  loadMessageBtn,
-  loadUploadForm,
+  loadPromptForm,
+  loadChatHistory,
+
+  startResponseLoader,
+
   loadPermission,
-  loadTabBtn,
-  loadBackupEmailAddressForm,
 }
 
 a.app.main()

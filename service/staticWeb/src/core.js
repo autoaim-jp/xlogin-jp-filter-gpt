@@ -7,160 +7,14 @@
 /* local setting */
 const mod = {}
 
-const init = (setting, output, input, lib) => {
+export const init = (setting, output, input, lib) => {
   mod.setting = setting
   mod.output = output
   mod.input = input
   mod.lib = lib
 }
 
-const handleTimerAdd = async ({ accessToken }) => {
-  setTimeout(async () => {
-    const timerAddResponse = await mod.output.timerAddRequest(argNamed({
-      param: { accessToken },
-      xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-      lib: [mod.lib.postRequest],
-    }))
-
-    logger.debug('handleTimerAdd', { timerAddResponse })
-  }, 10 * 1000)
-
-  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK') } }
-  return handleResult
-}
-
-const handleNotificationOpen = async ({ accessToken, notificationIdList }) => {
-  const notificationOpenResponse = await mod.output.notificationOpenRequest(argNamed({
-    param: { accessToken, notificationIdList },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    lib: [mod.lib.postRequest],
-  }))
-  logger.debug('handleNotificationOpen', { notificationOpenResponse })
-
-  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK') } }
-  return handleResult
-}
-
-const handleNotificationList = async ({ accessToken }) => {
-  const notificationListResponse = await mod.input.notificationListRequest(argNamed({
-    param: { accessToken },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    lib: [mod.lib.getRequest],
-  }))
-
-  if (!notificationListResponse || !notificationListResponse.data) {
-    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID_SESSION')
-    const result = {}
-    const handleResult = { response: { status, result } }
-    return handleResult
-  }
-
-  const { result } = notificationListResponse.data
-  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
-
-  const handleResult = { response: { status, result } }
-  return handleResult
-}
-
-const handleMessageSave = async ({ accessToken, message }) => {
-  const fileSaveResponse = await mod.output.fileSaveRequest(argNamed({
-    param: { accessToken, message },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    setting: mod.setting.getList('user.MESSAGE_FILE_PATH'),
-    lib: [mod.lib.postRequest],
-  }))
-
-  logger.debug('handleMessageSave', { fileSaveResponse })
-
-  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
-
-  const handleResult = { response: { status } }
-  return handleResult
-}
-
-const handleMessageContent = async ({ accessToken }) => {
-  const fileGetResponse = await mod.input.fileGetRequest(argNamed({
-    param: { accessToken },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    setting: mod.setting.getList('user.MESSAGE_FILE_PATH'),
-    lib: [mod.lib.getRequest],
-  }))
-
-  logger.debug('handleMessageContent', { data: fileGetResponse.data })
-
-  if (!fileGetResponse || !fileGetResponse.data) {
-    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID_SESSION')
-    const result = {}
-    const handleResult = { response: { status, result } }
-    return handleResult
-  }
-
-  const { result } = fileGetResponse.data
-  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
-  const handleResult = { response: { status, result } }
-  return handleResult
-}
-
-const handleMessageDelete = async ({ accessToken }) => {
-  const fileDeleteResponse = await mod.output.fileDeleteRequest(argNamed({
-    param: { accessToken },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    setting: mod.setting.getList('user.MESSAGE_FILE_PATH'),
-    lib: [mod.lib.postRequest],
-  }))
-
-  logger.debug('handleMessageDelete', { fileDeleteResponse })
-
-  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
-
-  const handleResult = { response: { status } }
-  return handleResult
-}
-
-const handleFileList = async ({ accessToken }) => {
-  const filePathSplitList = mod.setting.getValue('user.PROFILE_FILE_PATH_WITHOUT_EXT').split('/')
-  const fileDir = filePathSplitList.slice(0, filePathSplitList.length - 1).join('/')
-
-  const fileListResponse = await mod.input.fileListRequest(argNamed({
-    param: { accessToken, fileDir },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    lib: [mod.lib.getRequest],
-  }))
-
-  logger.debug('handleFileList', { data: fileListResponse.data })
-
-  if (!fileListResponse || !fileListResponse.data) {
-    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID_SESSION')
-    const result = {}
-
-    const handleResult = { response: { status, result } }
-    return handleResult
-  }
-
-  const { result } = fileListResponse.data
-
-  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
-
-  const handleResult = { response: { status, result } }
-  return handleResult
-}
-
-const handleFileContent = async ({ accessToken, fileLabel }) => {
-  const filePathSplitContent = mod.setting.getValue('user.PROFILE_FILE_PATH_WITHOUT_EXT').split('/')
-  const fileDir = filePathSplitContent.slice(0, filePathSplitContent.length - 1).join('/')
-
-  const fileContentResponse = await mod.input.fileContentRequest(argNamed({
-    param: { accessToken, fileDir, fileLabel },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    lib: [mod.lib.getFileRequest],
-  }))
-
-  // logger.debug('handleFileContent', { fileContentResponse })
-
-  return fileContentResponse
-}
-
-const handleSplitPermissionList = async ({ splitPermissionList }) => {
+export const handleSplitPermissionList = async ({ splitPermissionList }) => {
   const clientId = mod.setting.xdevkitSetting.getValue('env.CLIENT_ID')
   const result = { splitPermissionList, clientId }
 
@@ -170,70 +24,101 @@ const handleSplitPermissionList = async ({ splitPermissionList }) => {
   return handleResult
 }
 
-const handleUpdateBackupEmailAddress = async ({ accessToken, backupEmailAddress }) => {
-  const updateBackupEmailAddressResponse = await mod.output.updateBackupEmailAddressRequest(argNamed({
-    param: { accessToken, backupEmailAddress },
+/* promptをchatgptに登録。requestIdと生成したchatIdを返す。 */
+export const handlePromptSend = async ({ accessToken, prompt }) => {
+  const promptSendResponse = await mod.output.promptSendRequest(argNamed({
+    param: { accessToken, prompt },
     xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
     lib: [mod.lib.postRequest],
   }))
+  console.log({ promptSendResponse })
+  if (!promptSendResponse || !promptSendResponse.data || !promptSendResponse.data.result) {
+    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID')
+    return { response: { status } }
+  }
 
-  logger.debug('handleSplitPermissionList', { updateBackupEmailAddressResponse })
-  if (!updateBackupEmailAddressResponse || !updateBackupEmailAddressResponse.data) {
+  console.log('result:', promptSendResponse?.data?.result)
+
+  const { requestId } = promptSendResponse.data.result
+  const promptChatId = mod.lib.getUlid()
+  const responseChatId = mod.lib.getUlid()
+
+  const result = { requestId, promptChatId, responseChatId }
+  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK'), result } }
+  return handleResult
+}
+
+/* chatListのjsonを取得。 */
+export const handleChatList = async ({ accessToken }) => {
+  const fileGetResponse = await mod.input.fileGetRequest(argNamed({
+    param: { accessToken },
+    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
+    setting: mod.setting.getList('user.CHATGPT_FILE_PATH'),
+    lib: [mod.lib.getRequest],
+  }))
+
+  console.log({ fileGetResponse })
+  if (!fileGetResponse || !fileGetResponse.data || !fileGetResponse.data.result) {
+    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID')
+    return { response: { status } }
+  }
+  console.log('result:', fileGetResponse?.data?.result)
+
+  const chatList = fileGetResponse.data.result.jsonContent || {}
+  const result = { chatList }
+
+  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK'), result } }
+  return handleResult
+}
+
+/* chatListのjsonを更新。 */
+export const handleChatListUpdate = async ({ accessToken, chatList }) => {
+  const message = chatList
+
+  const fileSaveResponse = await mod.output.fileSaveRequest(argNamed({
+    param: { accessToken, message },
+    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
+    setting: mod.setting.getList('user.CHATGPT_FILE_PATH'),
+    lib: [mod.lib.postRequest],
+  }))
+
+  console.log({ fileSaveResponse })
+  if (!fileSaveResponse || !fileSaveResponse.data || !fileSaveResponse.data.result) {
+    const status = mod.setting.browserServerSetting.getValue('statusList.INVALID')
+    return { response: { status } }
+  }
+  console.log('result:', fileSaveResponse?.data?.result)
+
+  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK') } }
+  return handleResult
+}
+
+/* requestIdのリストでresponseを探す。 */
+export const handleLookupResponseList = async ({ accessToken, requestIdListStr }) => {
+  const responseListResponse = await mod.input.lookupResponseListRequest(argNamed({
+    param: { accessToken, requestIdListStr },
+    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
+    lib: [mod.lib.getRequest],
+  }))
+
+  console.log({ responseListResponse })
+
+  if (!responseListResponse || !responseListResponse.data) {
     const status = mod.setting.browserServerSetting.getValue('statusList.INVALID_SESSION')
     const result = {}
-
     const handleResult = { response: { status, result } }
     return handleResult
   }
 
-  const { result } = updateBackupEmailAddressResponse.data
-
+  const { result } = responseListResponse.data
   const status = mod.setting.browserServerSetting.getValue('statusList.OK')
 
   const handleResult = { response: { status, result } }
   return handleResult
 }
 
-const handleUploadFile = async ({
-  req, accessToken, multer, FormData, Readable,
-}) => {
-  const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 2 * 1024 * 1024 },
-  })
-
-  const uploadResult = await new Promise((resolve) => {
-    upload.single(mod.setting.getValue('key.FILE_UPLOAD'))(req, null, (error) => {
-      if (error instanceof multer.MulterError) {
-        return resolve({ error: true, message: error.message })
-      } if (error) {
-        return resolve({ error: true, message: 'unkown error' })
-      }
-
-      return resolve({ error: false, message: 'success' })
-    })
-  })
-  logger.debug('handleUploadFile', { uploadResult })
-
-  const filePath = mod.setting.getValue('user.PROFILE_FILE_PATH_WITHOUT_EXT')
-  const formData = new FormData()
-  formData.append('filePath', filePath)
-  formData.append('owner', mod.setting.getValue('env.CLIENT_ID'))
-  formData.append('file', Readable.from(req.file.buffer), { filename: filePath })
-
-  const fileAddResponse = await mod.output.fileAddRequest(argNamed({
-    param: { accessToken, formData },
-    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
-    lib: [mod.lib.postFormRequest],
-  }))
-  logger.debug('handleUploadFile', { fileAddResponse })
-
-  const handleResult = { response: { status: mod.setting.browserServerSetting.getValue('statusList.OK') } }
-  return handleResult
-}
-
-const createResponse = ({ req, res, handleResult }) => {
-  logger.debug('createResponse', { 'req.url': req.url, handleResult })
+export const createResponse = ({ req, res, handleResult }) => {
+  console.log('endResponse:', req.url, handleResult)
   // req.session.auth = handleResult.session
 
   const ERROR_PAGE = mod.setting.xdevkitSetting.getValue('url.ERROR_PAGE')
@@ -261,7 +146,7 @@ const createResponse = ({ req, res, handleResult }) => {
   return mod.output.endResponse({ res, json, ERROR_PAGE })
 }
 
-const handleInvalidSession = ({ req, res }) => {
+export const handleInvalidSession = ({ req, res }) => {
   if (!req.session || !req.session.auth) {
     const status = mod.setting.browserServerSetting.getValue('statusList.INVALID_SESSION')
     return res.json({ status })
@@ -270,23 +155,5 @@ const handleInvalidSession = ({ req, res }) => {
   return null
 }
 
-export default {
-  init,
-
-  handleTimerAdd,
-  handleNotificationOpen,
-  handleNotificationList,
-  handleMessageSave,
-  handleMessageContent,
-  handleMessageDelete,
-  handleSplitPermissionList,
-  handleUpdateBackupEmailAddress,
-
-  handleFileList,
-  handleFileContent,
-  handleUploadFile,
-
-  createResponse,
-  handleInvalidSession,
-}
+export default {}
 

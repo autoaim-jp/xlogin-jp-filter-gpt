@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Readable } from 'stream'
+import { ulid } from 'ulid'
 import axios from 'axios'
 import crypto from 'crypto'
 import https from 'https'
@@ -8,16 +8,13 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import dotenv from 'dotenv'
-import multer from 'multer'
-import FormData from 'form-data'
-import winston from 'winston'
 
 import xdevkit from './xdevkit-auth-router/src/app.js'
 import setting from './setting/index.js'
-import output from './output.js'
-import core from './core.js'
-import input from './input.js'
-import action from './action.js'
+import * as output from './output.js'
+import * as core from './core.js'
+import * as input from './input.js'
+import * as action from './action.js'
 import lib from './lib.js'
 
 
@@ -43,61 +40,30 @@ const _getOtherRouter = () => {
 const _getActionRouter = () => {
   const expressRouter = express.Router()
 
-  const timerAddHandler = a.action.getHandlerTimerAdd(argNamed({
-    core: [a.core.handleTimerAdd, a.core.createResponse],
-  }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/timer/add`, timerAddHandler)
-
-  const notificationOpenHandler = a.action.getHandlerNotificationOpen(argNamed({
-    core: [a.core.handleNotificationOpen, a.core.createResponse],
-  }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/notification/open`, notificationOpenHandler)
-
-  const notificationListHandler = a.action.getHandlerNotificationList(argNamed({
-    core: [a.core.handleInvalidSession, a.core.handleNotificationList, a.core.createResponse],
-  }))
-  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/notification/list`, notificationListHandler)
-
-  const messageSaveHandler = a.action.getHandlerMessageSave(argNamed({
-    core: [a.core.handleMessageSave, a.core.createResponse],
-  }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/message/save`, messageSaveHandler)
-
-  const messageContentHandler = a.action.getHandlerMessageContent(argNamed({
-    core: [a.core.handleMessageContent, a.core.createResponse],
-  }))
-  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/message/content`, messageContentHandler)
-
-  const messageDeleteHandler = a.action.getHandlerMessageDelete(argNamed({
-    core: [a.core.handleMessageDelete, a.core.createResponse],
-  }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/message/delete`, messageDeleteHandler)
-
-  const updateBackupEmailAddressHandler = a.action.getHandlerUpdateBackupEmailAddress(argNamed({
-    core: [a.core.handleUpdateBackupEmailAddress, a.core.createResponse],
-  }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/backupEmailAddress/save`, updateBackupEmailAddressHandler)
-
   const splitPermissionListHandler = a.action.getHandlerSplitPermissionList(argNamed({
     core: [a.core.handleInvalidSession, a.core.handleSplitPermissionList, a.core.createResponse],
   }))
   expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/session/splitPermissionList`, splitPermissionListHandler)
 
-  const uploadFileHandler = a.action.getHandlerUploadFile(argNamed({
-    core: [a.core.handleUploadFile, a.core.createResponse],
-    mod: [multer, FormData, Readable],
+  const promptSendHandler = a.action.getHandlerPromptSend(argNamed({
+    core: [a.core.handlePromptSend, a.core.createResponse],
   }))
-  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/form/save`, uploadFileHandler)
+  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/prompt/send`, promptSendHandler)
 
-  const fileListHandler = a.action.getHandlerFileList(argNamed({
-    core: [a.core.handleFileList, a.core.createResponse],
+  const chatListUpdateHandler = a.action.getHandlerChatListUpdate(argNamed({
+    core: [a.core.handleChatListUpdate, a.core.createResponse],
   }))
-  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/file/list`, fileListHandler)
+  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/chat/update`, chatListUpdateHandler)
 
-  const fileContentHandler = a.action.getHandlerFileContent(argNamed({
-    core: [a.core.handleFileContent],
+  const chatListHandler = a.action.getHandlerChatList(argNamed({
+    core: [a.core.handleInvalidSession, a.core.handleChatList, a.core.createResponse],
   }))
-  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/file/content`, fileContentHandler)
+  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/chat/list`, chatListHandler)
+
+  const lookupResponseListHandler = a.action.getHandlerLookupResponseList(argNamed({
+    core: [a.core.handleInvalidSession, a.core.handleLookupResponseList, a.core.createResponse],
+  }))
+  expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/response/list`, lookupResponseListHandler)
 
 
   return expressRouter
@@ -111,22 +77,20 @@ const _startServer = (expressApp) => {
     }
     const server = https.createServer(tlsConfig, expressApp)
     server.listen(setting.getValue('env.SERVER_PORT'), () => {
-      logger.info(`${setting.getValue('env.CLIENT_ID')} listen to port: ${setting.getValue('env.SERVER_PORT')}, origin: ${setting.getValue('env.SERVER_ORIGIN')}`)
+      console.log(`${setting.getValue('env.CLIENT_ID')} listen to port: ${setting.getValue('env.SERVER_PORT')}, origin: ${setting.getValue('env.SERVER_ORIGIN')}`)
     })
   } else {
     expressApp.listen(setting.getValue('env.SERVER_PORT'), () => {
-      logger.info(`${setting.getValue('env.CLIENT_ID')} listen to port: ${setting.getValue('env.SERVER_PORT')}, origin: ${setting.getValue('env.SERVER_ORIGIN')}`)
+      console.log(`${setting.getValue('env.CLIENT_ID')} listen to port: ${setting.getValue('env.SERVER_PORT')}, origin: ${setting.getValue('env.SERVER_ORIGIN')}`)
     })
   }
 }
 
 const main = () => {
   dotenv.config()
-  lib.init(axios, http, https, crypto, winston)
+  lib.init(axios, http, https, crypto, ulid)
   setting.init(process.env)
   core.init(setting, output, input, lib)
-  a.lib.monkeyPatch({ SERVICE_NAME: a.setting.getValue('env.SERVICE_NAME') })
-
 
   const expressApp = express()
   expressApp.use(_getOtherRouter())

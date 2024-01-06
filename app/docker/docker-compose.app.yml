@@ -7,7 +7,7 @@ services:
       context: ../../
       dockerfile: ./service/redis/docker/Dockerfile
     volumes:
-      - xlcs-rc-redis:/data
+      - xlogin-jp-filter-gpt-rc-redis:/data
     healthcheck:
       test: ["CMD", "redis-cli","ping"]
 
@@ -22,7 +22,7 @@ services:
       - 127.0.0.1:3005:3005
     volumes:
       - ../../service/staticWeb/src:/app
-      - xlcs-wsc-nm:/app/node_modules
+      - xlogin-jp-filter-gpt-wsc-nm:/app/node_modules
     depends_on:
       redis_container: 
         condition: service_healthy
@@ -34,6 +34,6 @@ services:
       retries: 10
 
 volumes:
-  xlcs-rc-redis:
-  xlcs-wsc-nm:
+  xlogin-jp-filter-gpt-rc-redis:
+  xlogin-jp-filter-gpt-wsc-nm:
 

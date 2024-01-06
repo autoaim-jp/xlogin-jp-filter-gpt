@@ -1,94 +1,6 @@
 /* /action.js */
 
-const getHandlerTimerAdd = ({ handleTimerAdd, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-
-    const handleResult = await handleTimerAdd({ accessToken })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerNotificationOpen = ({ handleNotificationOpen, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-    const { notificationIdList } = req.body
-
-    const handleResult = await handleNotificationOpen({ accessToken, notificationIdList })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerNotificationList = ({ handleInvalidSession, handleNotificationList, createResponse }) => {
-  return async (req, res) => {
-    if (handleInvalidSession({ req, res })) {
-      return
-    }
-
-    const { accessToken } = req.session.auth
-
-    const handleResult = await handleNotificationList({ accessToken })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerMessageSave = ({ handleMessageSave, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-    const { message } = req.body
-
-    const handleResult = await handleMessageSave({ accessToken, message })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerMessageContent = ({ handleMessageContent, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-
-    const handleResult = await handleMessageContent({ accessToken })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerMessageDelete = ({ handleMessageDelete, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-
-    const handleResult = await handleMessageDelete({ accessToken })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerFileList = ({ handleFileList, createResponse }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-
-    const handleResult = await handleFileList({ accessToken })
-
-    createResponse({ req, res, handleResult })
-  }
-}
-
-const getHandlerFileContent = ({ handleFileContent }) => {
-  return async (req, res) => {
-    const { accessToken } = req.session.auth
-    const { fileLabel } = req.query
-
-    const fileContentGetResult = await handleFileContent({ accessToken, fileLabel })
-
-    res.end(fileContentGetResult.res.data)
-  }
-}
-
-
-const getHandlerSplitPermissionList = ({ handleInvalidSession, handleSplitPermissionList, createResponse }) => {
+export const getHandlerSplitPermissionList = ({ handleInvalidSession, handleSplitPermissionList, createResponse }) => {
   return async (req, res) => {
     if (handleInvalidSession({ req, res })) {
       return
@@ -102,48 +14,59 @@ const getHandlerSplitPermissionList = ({ handleInvalidSession, handleSplitPermis
   }
 }
 
-const getHandlerUpdateBackupEmailAddress = ({ handleUpdateBackupEmailAddress, createResponse }) => {
+
+export const getHandlerPromptSend = ({ handlePromptSend, createResponse }) => {
   return async (req, res) => {
     const { accessToken } = req.session.auth
-    const { backupEmailAddress } = req.body
+    const { prompt } = req.body
 
-    const handleResult = await handleUpdateBackupEmailAddress({ accessToken, backupEmailAddress })
+    const handleResult = await handlePromptSend({ accessToken, prompt })
 
     createResponse({ req, res, handleResult })
   }
 }
 
-const getHandlerUploadFile = ({
-  handleUploadFile, createResponse, multer, FormData, Readable,
-}) => {
+export const getHandlerChatListUpdate = ({ handleChatListUpdate, createResponse }) => {
   return async (req, res) => {
     const { accessToken } = req.session.auth
+    const { chatList } = req.body
 
-    const handleResult = await handleUploadFile({
-      req, accessToken, multer, FormData, Readable,
-    })
+    const handleResult = await handleChatListUpdate({ accessToken, chatList })
 
     createResponse({ req, res, handleResult })
   }
 }
 
-export default {
-  getHandlerTimerAdd,
 
-  getHandlerNotificationOpen,
-  getHandlerNotificationList,
+export const getHandlerChatList = ({ handleInvalidSession, handleChatList, createResponse }) => {
+  return async (req, res) => {
+    if (handleInvalidSession({ req, res })) {
+      return
+    }
 
-  getHandlerMessageSave,
-  getHandlerMessageContent,
-  getHandlerMessageDelete,
+    const { accessToken } = req.session.auth
 
-  getHandlerFileList,
-  getHandlerFileContent,
+    const handleResult = await handleChatList({ accessToken })
 
-  getHandlerSplitPermissionList,
-
-  getHandlerUpdateBackupEmailAddress,
-
-  getHandlerUploadFile,
+    createResponse({ req, res, handleResult })
+  }
 }
+
+export const getHandlerLookupResponseList = ({ handleInvalidSession, handleLookupResponseList, createResponse }) => {
+  return async (req, res) => {
+    if (handleInvalidSession({ req, res })) {
+      return
+    }
+
+    const { accessToken } = req.session.auth
+    const { requestIdListStr } = req.query
+
+    const handleResult = await handleLookupResponseList({ accessToken, requestIdListStr })
+
+    createResponse({ req, res, handleResult })
+  }
+}
+
+
+export default {}
 
