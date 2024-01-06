@@ -1,10 +1,18 @@
 /* create elm */
 
 /* request */
-export const getSendPrompt = ({ apiEndpoint, getPromptValue, postRequest }) => {
-  const url = `${apiEndpoint}/prompt/send`
+export const getSendDraft = ({ apiEndpoint, getDraftValue, postRequest }) => {
+  const url = `${apiEndpoint}/draft/send`
   return () => {
-    const prompt = getPromptValue()
+    const draft = getDraftValue()
+    const param = { draft }
+    return postRequest(url, param)
+  }
+}
+
+export const getSendPrompt = ({ apiEndpoint, postRequest }) => {
+  const url = `${apiEndpoint}/prompt/send`
+  return ({ prompt }) => {
     const param = { prompt }
     return postRequest(url, param)
   }
@@ -29,13 +37,14 @@ export const setOnClickSaveMessageButton = ({ onClickSaveMessageButton }) => {
 }
 
 /* onSubmit */
-export const setOnSubmitSendPromptForm = ({ onSubmitSendPromptForm }) => {
-  const sendPromptFormElm = document.querySelector('#sendPromptForm')
-  sendPromptFormElm.onsubmit = (e) => {
+export const setOnSubmitSendDraftForm = ({ onSubmitSendDraftForm }) => {
+  const sendDraftFormElm = document.querySelector('#sendDraftForm')
+  sendDraftFormElm.onsubmit = (e) => {
     e.preventDefault()
-    onSubmitSendPromptForm()
+    onSubmitSendDraftForm()
   }
 }
+
 
 /* show data */
 const rightMessageTemplateElm = document.querySelector('#rightMessageTemplate')
@@ -88,8 +97,48 @@ export const showPromptForm = ({ splitPermissionListResult }) => {
   }
 }
 
-export const clearPromptValue = () => {
-  const sendPromptInputElm = document.querySelector('#sendPromptInput')
-  sendPromptInputElm.value = ''
+export const clearDraftValue = () => {
+  const sendDraftInputElm = document.querySelector('#sendDraftInput')
+  sendDraftInputElm.value = ''
 }
+
+export const _createModalElm = () => {
+  const modalTemplateElm = document.querySelector('#modalTemplate')
+  const modalElm = modalTemplateElm.cloneNode(true)
+  modalElm.id = ''
+
+  const modalTitleElm = modalElm.querySelector('[data-id="modalTitle"]')
+  modalTitleElm.innerText = 'ChatGPTへの質問内容'
+
+  const labelDiv = document.createElement('div')
+  labelDiv.innerText = 'エラーが発生しました。'
+  modalElm.querySelector('[data-id="modalContent"]').appendChild(labelDiv)
+
+  const setContent = ({ modalElmHtml }) => {
+    modalElm.querySelector('[data-id="modalContent"]').innerHTML = modalElmHtml
+  }
+
+  return { modalElm, setContent }
+
+}
+
+export const getShowModalAndSetOnClick = ({
+  showModal, parseModalElmToPrompt
+}) => {
+  return async ({ modalElmHtml, onClickSendPromptButton }) => {
+    const { modalElm, setContent } = _createModalElm()
+    setContent({ modalElmHtml })
+    const isClickConfirm = await showModal(modalElm)
+    if (!isClickConfirm) {
+      console.log({ debug: 'キャンセル', isClickConfirm })
+      return
+    }
+    console.log({ debug: 'prompt送信', isClickConfirm })
+    
+
+    const prompt = parseModalElmToPrompt({ modalElm })
+    onClickSendPromptButton({ prompt })
+  }
+}
+
 

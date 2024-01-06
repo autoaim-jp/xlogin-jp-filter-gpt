@@ -24,7 +24,7 @@ const showNotification = () => {
   }, 30 * 1000)
 }
 
-const loadPromptForm = () => {
+const _getOnClickSendPromptButton = () => {
   const sendPrompt = a.output.getSendPrompt(argNamed({
     browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
     input: [a.input.getPromptValue],
@@ -41,17 +41,42 @@ const loadPromptForm = () => {
     lib: [a.lib.common.input.getRequest],
   }))
 
-  const onSubmitSendPromptForm = a.action.getOnSubmitSendPromptForm(argNamed({
-    input: [a.input.getPromptValue],
-    input2: { fetchChatList },
-    output: [a.output.clearPromptValue],
+  const onClickSendPromptButton = a.action.getOnClickSendPromptButton(argNamed({
+    input: { fetchChatList },
+    output: [a.output.clearDraftValue],
     output2: { sendPrompt, updateChatList },
     core: [a.core.appendChatList],
     app: [a.app.loadChatHistory],
   }))
-  a.output.setOnSubmitSendPromptForm(argNamed({
-    onSubmit: { onSubmitSendPromptForm },
+
+  return onClickSendPromptButton
+}
+
+const loadDraftForm = () => {
+  const sendDraft = a.output.getSendDraft(argNamed({
+    browserServerSetting: a.setting.browserServerSetting.getList('apiEndpoint'),
+    input: [a.input.getDraftValue],
+    lib: [a.lib.common.output.postRequest],
   }))
+
+  const showModalAndSetOnClick = a.output.getShowModalAndSetOnClick(argNamed({
+    lib: [a.lib.xdevkit.output.showModal],
+    core: [a.core.parseModalElmToPrompt],
+  }))
+
+  const onClickSendPromptButton = _getOnClickSendPromptButton()
+
+  const onSubmitSendDraftForm = a.action.getOnSubmitSendDraftForm(argNamed({
+    output: [ sendDraft ],
+    output2: { showModalAndSetOnClick },
+    core: [ a.core.convertPromptListToHtml ],
+    param: { onClickSendPromptButton },
+  }))
+
+  a.output.setOnSubmitSendDraftForm(argNamed({
+    onSubmit: { onSubmitSendDraftForm },
+  }))
+
 }
 
 const loadChatHistory = async () => {
@@ -135,7 +160,7 @@ const main = async () => {
 a.app = {
   main,
   showNotification,
-  loadPromptForm,
+  loadDraftForm,
   loadChatHistory,
 
   startResponseLoader,

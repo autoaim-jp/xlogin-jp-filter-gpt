@@ -1,8 +1,23 @@
-export const getOnSubmitSendPromptForm = ({
-  sendPrompt, getPromptValue, clearPromptValue, fetchChatList, appendChatList, updateChatList, loadChatHistory,
+export const getOnSubmitSendDraftForm = ({
+  sendDraft, convertPromptListToHtml, showModalAndSetOnClick, onClickSendPromptButton
 }) => {
   return async () => {
-    const sendPromptResult = await sendPrompt()
+    const sendDraftResult = await sendDraft()
+    console.log({ sendDraftResult })
+
+    const modalElmHtml = convertPromptListToHtml({ sendDraftResult })
+
+    console.log({ modalElmHtml })
+
+    showModalAndSetOnClick({ modalElmHtml, onClickSendPromptButton })
+  }
+}
+
+export const getOnClickSendPromptButton = ({
+  sendPrompt, clearDraftValue, fetchChatList, appendChatList, updateChatList, loadChatHistory,
+}) => {
+  return async ({ prompt }) => {
+    const sendPromptResult = await sendPrompt({ prompt })
     console.log({ sendPromptResult })
     const { requestId, promptChatId, responseChatId } = sendPromptResult.result
 
@@ -17,7 +32,7 @@ export const getOnSubmitSendPromptForm = ({
     const updateChatListResult = await updateChatList({ newChatList })
     console.log({ updateChatListResult })
 
-    clearPromptValue()
+    clearDraftValue()
 
     loadChatHistory()
   }

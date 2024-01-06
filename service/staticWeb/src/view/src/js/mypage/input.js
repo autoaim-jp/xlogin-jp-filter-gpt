@@ -1,5 +1,10 @@
 /* mypage/input.js */
 
+export const getDraftValue = () => {
+  const sendDraftInputElm = document.querySelector('#sendDraftInput')
+  return sendDraftInputElm.value
+}
+
 export const getPromptValue = () => {
   const sendPromptInputElm = document.querySelector('#sendPromptInput')
   return sendPromptInputElm.value
