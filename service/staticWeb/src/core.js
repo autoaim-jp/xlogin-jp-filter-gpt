@@ -32,7 +32,7 @@ export const handleSendDraft = async ({ accessToken, draft }) => {
     lib: [mod.lib.postRequest],
   }))
 
-  console.log({ textConvertResponse })
+  console.log({ result: textConvertResponse.data.result })
 
   const status = mod.setting.browserServerSetting.getValue('statusList.OK')
   const { parsedResult } = textConvertResponse.data.result.result
@@ -42,6 +42,7 @@ export const handleSendDraft = async ({ accessToken, draft }) => {
   wordObjList.forEach((wordObjList) => {
     const wordList = wordObjList.split(',')
     if (wordList.length < 2 ) {
+      promptWordList.push(['\n'])
       return
     }
     if (wordList[2] === '固有名詞') {

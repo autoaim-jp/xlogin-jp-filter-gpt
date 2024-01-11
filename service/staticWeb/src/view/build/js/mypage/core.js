@@ -97,9 +97,14 @@ export const convertPromptListToHtml = ({ sendDraftResult }) => {
   const modalElmHtmlList = []
   promptWordList.forEach((wordList) => {
     console.log({ wordList })
-    /* p has plain text */
     if (wordList.length === 1) {
-      modalElmHtmlList.push(`<p class='inline'>${wordList[0]}</p>`)
+      if (wordList[0] === '\n') {
+        /* br is newline */
+        modalElmHtmlList.push(`<br />`)
+      } else {
+        /* p has plain text */
+        modalElmHtmlList.push(`<p class='inline'>${wordList[0]}</p>`)
+      }
       return
     }
     
@@ -115,24 +120,27 @@ export const convertPromptListToHtml = ({ sendDraftResult }) => {
     modalElmHtmlList.push(`</select>`)
   })
 
-  const modalElmHtml = modalElmHtmlList.join('\n')
+  const modalElmHtml = `<div class='max-h-72 overflow-y-scroll' data-id='modalScrollDiv'>${modalElmHtmlList.join('\n')}</div>`
   return modalElmHtml
-
-
-  // const modalElmHtml = '<select id="countries" class="inline bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><option selected>Choose a country</option><option value="US">United States</option><option value="CA">Canada</option><option value="FR">France</option><option value="DE">Germany</option></select><span>通常テキスト</span><select id="countries" class="inline bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><option selected>Choose a country</option><option value="US">United States</option><option value="CA">Canada</option><option value="FR">France</option><option value="DE">Germany</option></select><select id="countries" class="inline bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"><option selected>Choose a country</option><option value="US">United States</option><option value="CA">Canada</option><option value="FR">France</option><option value="DE">Germany</option></select>'
 }
 
 export const parseModalElmToPrompt = ({ modalElm }) => {
-  const elmList = modalElm.querySelector('[data-id="modalContent"]').children
+  const elmList = modalElm.querySelector('[data-id="modalScrollDiv"]').children
   const promptList = []
 
   Object.values(elmList).forEach((elm) => {
+    /* br is newline */
+    if (elm.tagName === 'BR') {
+      promptList.push('\n')
+      return
+    }
+
     /* p has plain text */
     if (elm.tagName === 'P') {
       promptList.push(elm.innerText)
       return
     }
-    
+
     /* select has multiple options */
     promptList.push(elm.selectedOptions[0].value)
   })

@@ -31,7 +31,7 @@
   <body class='flex flex-col'>
 
         <nav class='w-full z-30 top-0 py-1'>
-      <div class='max-w-3xl container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2'>
+      <div class='max-w-6xl container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2'>
 
         <div class='pl-4 flex items-center'>
           <a class='font-bold text-2xl' href='/'>
@@ -114,7 +114,7 @@
 
 
     <div class='section1 flex flex-row text-left text-black md:flex items-center justify-center flex-grow'>
-      <div class='max-w-3xl bg-gray-100 p-6 rounded shadow-xl w-full mx-auto flex flex-col justify-center'>
+      <div class='max-w-6xl bg-gray-100 p-6 rounded shadow-xl w-full mx-auto flex flex-col justify-center'>
         <h2>ChatGPT Sample Client</h2>
         <div class='bg-white rounded-lg shadow p-4 mb-4 flex flex-col h-screen'>
           <div class='flex items-center mb-4'>
@@ -131,7 +131,7 @@
           </div>
 
           <form id='sendDraftForm' class='flex items-center hidden' action='#'>
-            <input id='sendDraftInput' type='text' class='flex-grow p-2 rounded border border-gray-300 mr-2 focus:outline-none' placeholder='メッセージを入力...'>
+            <textarea id='sendDraftInput' type='text' class='flex-grow p-2 rounded border border-gray-300 mr-2 focus:outline-none' placeholder='メッセージを入力...'></textarea>
             <button id='sendDraftBtn' type='submit' class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'>送信</button>
           </form>
           <div id='chatgptPermissionRequestContainer' class='flex justify-center hidden'>
@@ -143,7 +143,7 @@
     </div>
 
     <div id='rightMessageTemplate' class='flex items-end justify-end mb-2 hidden'>
-      <div class='bg-green-100 p-2 rounded-lg'>
+      <div class='mr-2 ml-16 bg-green-100 p-2 rounded-lg'>
         <p data-id='messageBody' class='text-gray-800'>自分のメッセージ</p>
       </div>
       <div class='w-8 h-8 bg-gray-400 rounded-full flex-shrink-0'></div>
@@ -151,7 +151,7 @@
 
     <div id='leftMessageTemplate' class='flex items-start mb-2 hidden'>
       <div class='w-8 h-8 bg-gray-400 rounded-full flex-shrink-0'></div>
-      <div class='ml-2 bg-red-200 p-2 rounded-lg'>
+      <div class='ml-2 mr-16 bg-red-200 p-2 rounded-lg'>
         <p data-id='messageBody' class='text-gray-800'>相手のメッセージ</p>
       </div>
     </div>
@@ -179,7 +179,7 @@
 </div>
 
 
-    <div id='hiddenForTailwindByJs' class='hidden inline w-full h-96 p-1'></div>
+    <div id='hiddenForTailwindByJs' class='hidden inline w-full h-96 p-1 max-h-72 overflow-y-scroll'></div>
   </body>
       
       

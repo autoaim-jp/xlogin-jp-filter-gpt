@@ -45,6 +45,20 @@ export const setOnSubmitSendDraftForm = ({ onSubmitSendDraftForm }) => {
   }
 }
 
+/* onKeydown */
+export const setOnSubmitByCtrlEnter = ({ onSubmitSendDraftForm }) => {
+  const sendDraftInputElm = document.querySelector('#sendDraftInput')
+  sendDraftInputElm.addEventListener('keydown', (e) => {
+    if(e.ctrlKey) {
+      if(e.code === 'Enter'){
+        e.preventDefault()
+        onSubmitSendDraftForm()
+      }
+    }
+  })
+}
+
+
 
 /* show data */
 const rightMessageTemplateElm = document.querySelector('#rightMessageTemplate')
@@ -77,6 +91,8 @@ export const showChatList = ({ simpleChatList }) => {
       chatElm.querySelector('[data-id="messageBody"]').innerText = '...'
     }
   })
+
+  chatAreaElm.scrollTop = chatAreaElm.scrollHeight
 }
 
 export const showChatHistory = ({ splitPermissionListResult }) => {

@@ -74,6 +74,9 @@ const loadDraftForm = () => {
     param: { onClickSendPromptButton },
   }))
 
+  a.output.setOnSubmitByCtrlEnter(argNamed({
+    onSubmit: { onSubmitSendDraftForm },
+  }))
   a.output.setOnSubmitSendDraftForm(argNamed({
     onSubmit: { onSubmitSendDraftForm },
   }))
