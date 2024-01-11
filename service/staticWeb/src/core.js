@@ -24,6 +24,40 @@ export const handleSplitPermissionList = async ({ splitPermissionList }) => {
   return handleResult
 }
 
+/* draftをmecabで変換 */
+export const handleSendDraft = async ({ accessToken, draft }) => {
+  const textConvertResponse = await mod.output.textConvertRequest(argNamed({
+    param: { accessToken, message: draft },
+    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
+    lib: [mod.lib.postRequest],
+  }))
+
+  console.log({ textConvertResponse })
+
+  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
+  const { parsedResult } = textConvertResponse.data.result.result
+
+  const promptWordList = []
+  const wordObjList = parsedResult.split('\n')
+  wordObjList.forEach((wordObjList) => {
+    const wordList = wordObjList.split(',')
+    if (wordList.length < 2 ) {
+      return
+    }
+    if (wordList[2] === '固有名詞') {
+      promptWordList.push([wordList[0], 'A'])
+    } else {
+      promptWordList.push([wordList[0]])
+    }
+  })
+
+  const result = { promptWordList }
+
+  const handleResult = { response: { status, result, } }
+  return handleResult
+}
+
+
 /* promptをchatgptに登録。requestIdと生成したchatIdを返す。 */
 export const handlePromptSend = async ({ accessToken, prompt }) => {
   const promptSendResponse = await mod.output.promptSendRequest(argNamed({

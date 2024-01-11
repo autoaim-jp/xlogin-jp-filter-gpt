@@ -26,7 +26,7 @@ export const getOnClickSendPromptButton = ({
     const { chatList } = chatListResult.result
 
     const newChatList = appendChatList({
-      getPromptValue, chatList, promptChatId, responseChatId, requestId,
+      prompt, chatList, promptChatId, responseChatId, requestId,
     })
 
     const updateChatListResult = await updateChatList({ newChatList })

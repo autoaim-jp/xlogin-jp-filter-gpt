@@ -65,6 +65,10 @@ const _getActionRouter = () => {
   }))
   expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/response/list`, lookupResponseListHandler)
 
+  const sendDraftHandler = a.action.getHandlerSendDraft(argNamed({
+    core: [a.core.handleSendDraft, a.core.createResponse],
+  }))
+  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/draft/send`, sendDraftHandler)
 
   return expressRouter
 }

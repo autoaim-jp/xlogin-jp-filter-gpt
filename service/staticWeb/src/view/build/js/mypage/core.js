@@ -3,10 +3,8 @@
 let requestIdList = {}
 
 export const appendChatList = ({
-  getPromptValue, chatList, promptChatId, responseChatId, requestId,
+  prompt, chatList, promptChatId, responseChatId, requestId,
 }) => {
-  const prompt = getPromptValue()
-
   const newChatList = chatList
   newChatList[promptChatId] = { isMine: true, text: prompt }
   newChatList[responseChatId] = { isMine: false, requestId, waiting: true }
@@ -100,13 +98,13 @@ export const convertPromptListToHtml = ({ sendDraftResult }) => {
   promptWordList.forEach((wordList) => {
     console.log({ wordList })
     /* p has plain text */
-    if (wordList.length === 0) {
-      modalElmHtmlList.push(`<p>${wordList[0]}</p>`)
+    if (wordList.length === 1) {
+      modalElmHtmlList.push(`<p class='inline'>${wordList[0]}</p>`)
       return
     }
     
     /* select has multiple options */
-    modalElmHtmlList.push(`<select class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500   p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>`)
+    modalElmHtmlList.push(`<select class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>`)
     wordList.forEach((wordCandidate, i) => {
       if (i === 0) {
         modalElmHtmlList.push(`<option value=${wordCandidate} selected>${wordCandidate}</option>`)
@@ -128,7 +126,7 @@ export const parseModalElmToPrompt = ({ modalElm }) => {
   const elmList = modalElm.querySelector('[data-id="modalContent"]').children
   const promptList = []
 
-  elmList.forEach((elm) => {
+  Object.values(elmList).forEach((elm) => {
     /* p has plain text */
     if (elm.tagName === 'P') {
       promptList.push(elm.innerText)

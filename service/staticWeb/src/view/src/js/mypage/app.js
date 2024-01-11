@@ -60,7 +60,8 @@ const loadDraftForm = () => {
   }))
 
   const showModalAndSetOnClick = a.output.getShowModalAndSetOnClick(argNamed({
-    lib: [a.lib.xdevkit.output.showModal],
+    // lib: [a.lib.xdevkit.output.showModal],
+    lib: [a.output.showModalCustom],
     core: [a.core.parseModalElmToPrompt],
   }))
 

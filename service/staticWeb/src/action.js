@@ -14,6 +14,17 @@ export const getHandlerSplitPermissionList = ({ handleInvalidSession, handleSpli
   }
 }
 
+export const getHandlerSendDraft = ({ handleSendDraft, createResponse }) => {
+  return async (req, res) => {
+    const { accessToken } = req.session.auth
+    const { draft } = req.body
+
+    const handleResult = await handleSendDraft({ accessToken, draft })
+
+    createResponse({ req, res, handleResult })
+  }
+}
+
 
 export const getHandlerPromptSend = ({ handlePromptSend, createResponse }) => {
   return async (req, res) => {
