@@ -67,7 +67,7 @@ const loadDraftForm = () => {
   const onClickSendPromptButton = _getOnClickSendPromptButton()
 
   const onSubmitSendDraftForm = a.action.getOnSubmitSendDraftForm(argNamed({
-    output: [ sendDraft ],
+    output: { sendDraft },
     output2: { showModalAndSetOnClick },
     core: [ a.core.convertPromptListToHtml ],
     param: { onClickSendPromptButton },
@@ -141,10 +141,9 @@ const main = async () => {
   a.lib.common.output.setOnClickNavManu()
   a.lib.monkeyPatch()
 
-  console.log('loadPromptForm')
-  a.app.loadPromptForm()
-  // console.log('showNotification')
-  // a.app.showNotification()
+  console.log('loadDraftForm')
+  a.app.loadDraftForm()
+
   console.log('loadPermission')
   a.app.loadPermission()
   await a.app.loadChatHistory()
