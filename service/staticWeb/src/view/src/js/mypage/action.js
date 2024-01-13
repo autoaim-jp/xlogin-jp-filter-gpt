@@ -1,5 +1,5 @@
 export const getOnSubmitSendDraftForm = ({
-  sendDraft, convertPromptListToHtml, showModalAndSetOnClick, onClickSendPromptButton
+  sendDraft, convertPromptListToHtml, showModalAndSetOnClick, onClickSendPromptButton,
 }) => {
   return async () => {
     const sendDraftResult = await sendDraft()

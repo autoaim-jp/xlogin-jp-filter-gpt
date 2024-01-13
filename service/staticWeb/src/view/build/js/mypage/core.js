@@ -100,16 +100,16 @@ export const convertPromptListToHtml = ({ sendDraftResult }) => {
     if (wordList.length === 1) {
       if (wordList[0] === '\n') {
         /* br is newline */
-        modalElmHtmlList.push(`<br />`)
+        modalElmHtmlList.push('<br />')
       } else {
         /* p has plain text */
         modalElmHtmlList.push(`<p class='inline'>${wordList[0]}</p>`)
       }
       return
     }
-    
+
     /* select has multiple options */
-    modalElmHtmlList.push(`<select class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>`)
+    modalElmHtmlList.push('<select class=\'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\'>')
     wordList.forEach((wordCandidate, i) => {
       if (i === 0) {
         modalElmHtmlList.push(`<option value=${wordCandidate} selected>${wordCandidate}</option>`)
@@ -117,7 +117,7 @@ export const convertPromptListToHtml = ({ sendDraftResult }) => {
         modalElmHtmlList.push(`<option value=${wordCandidate}>${wordCandidate}</option>`)
       }
     })
-    modalElmHtmlList.push(`</select>`)
+    modalElmHtmlList.push('</select>')
   })
 
   const modalElmHtml = `<div class='max-h-72 overflow-y-scroll' data-id='modalScrollDiv'>${modalElmHtmlList.join('\n')}</div>`

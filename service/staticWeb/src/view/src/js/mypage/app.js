@@ -70,7 +70,7 @@ const loadDraftForm = () => {
   const onSubmitSendDraftForm = a.action.getOnSubmitSendDraftForm(argNamed({
     output: { sendDraft },
     output2: { showModalAndSetOnClick },
-    core: [ a.core.convertPromptListToHtml ],
+    core: [a.core.convertPromptListToHtml],
     param: { onClickSendPromptButton },
   }))
 
@@ -80,7 +80,6 @@ const loadDraftForm = () => {
   a.output.setOnSubmitSendDraftForm(argNamed({
     onSubmit: { onSubmitSendDraftForm },
   }))
-
 }
 
 const loadChatHistory = async () => {

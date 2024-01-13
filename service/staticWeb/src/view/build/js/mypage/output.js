@@ -49,15 +49,14 @@ export const setOnSubmitSendDraftForm = ({ onSubmitSendDraftForm }) => {
 export const setOnSubmitByCtrlEnter = ({ onSubmitSendDraftForm }) => {
   const sendDraftInputElm = document.querySelector('#sendDraftInput')
   sendDraftInputElm.addEventListener('keydown', (e) => {
-    if(e.ctrlKey) {
-      if(e.code === 'Enter'){
+    if (e.ctrlKey) {
+      if (e.code === 'Enter') {
         e.preventDefault()
         onSubmitSendDraftForm()
       }
     }
   })
 }
-
 
 
 /* show data */
@@ -138,7 +137,7 @@ export const _createModalElm = () => {
 }
 
 export const getShowModalAndSetOnClick = ({
-  showModalCustom, parseModalElmToPrompt
+  showModalCustom, parseModalElmToPrompt,
 }) => {
   return async ({ modalElmHtml, onClickSendPromptButton }) => {
     const { modalElm, setContent } = _createModalElm()
@@ -159,16 +158,15 @@ export const getShowModalAndSetOnClick = ({
 }
 
 
-/* from xdevkit*/
-const _closeModal = () => {
-  applyElmList('[data-id="modal"], #modalBackground', (elm) => {
-    elm.classList.add('hidden')
-  })
-}
-
+/* from xdevkit */
 const applyElmList = (query, f, parent = document) => {
   Object.values(parent.querySelectorAll(query)).forEach((elm) => {
     f(elm)
+  })
+}
+const _closeModal = () => {
+  applyElmList('[data-id="modal"], #modalBackground', (elm) => {
+    elm.classList.add('hidden')
   })
 }
 
@@ -212,5 +210,4 @@ export const showModalCustom = (modalElm, cb, cancelButtonIsVisible = false) => 
     }, 100)
   })
 }
-
 

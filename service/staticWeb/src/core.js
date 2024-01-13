@@ -40,9 +40,9 @@ export const handleSendDraft = async ({ accessToken, draft }) => {
 
   const promptWordList = []
   const wordObjList = parsedResult.split('\n')
-  wordObjList.forEach((wordObjList) => {
-    const wordList = wordObjList.split(',')
-    if (wordList.length < 2 ) {
+  wordObjList.forEach((wordObj) => {
+    const wordList = wordObj.split(',')
+    if (wordList.length < 2) {
       promptWordList.push(['\n'])
       return
     }
@@ -69,7 +69,7 @@ export const handleSendDraft = async ({ accessToken, draft }) => {
 
   const result = { promptWordList }
 
-  const handleResult = { response: { status, result, } }
+  const handleResult = { response: { status, result } }
   return handleResult
 }
 
