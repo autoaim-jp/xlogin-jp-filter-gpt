@@ -20,8 +20,8 @@ const ejsConfig = {
     xdevkitComponentPath: `${__dirname}/../ejs/_xdevkit/component/`,
   },
   index: {
-    title: 'sample.xlogin.jp',
-    description: 'simple login client sample',
+    title: 'filter-gpt.xlogin.jp',
+    description: 'ChatGPT filter app',
     author: 'autoaim_jp',
     breadcrumbList: getBreadcrumbList(['/']),
 
@@ -31,8 +31,8 @@ const ejsConfig = {
     externalScriptList: ['/js/index/app.js'],
   },
   mypage: {
-    title: 'mypage | sample.xlogin.jp',
-    description: 'mypage',
+    title: 'app | filter-gpt.xlogin.jp',
+    description: 'app',
     author: 'autoaim_jp',
     breadcrumbList: getBreadcrumbList(['/', '/mypage']),
 
