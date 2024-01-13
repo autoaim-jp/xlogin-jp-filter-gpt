@@ -7,11 +7,12 @@
 /* local setting */
 const mod = {}
 
-export const init = (setting, output, input, lib) => {
+export const init = (setting, output, input, lib, faker) => {
   mod.setting = setting
   mod.output = output
   mod.input = input
   mod.lib = lib
+  mod.faker = faker
 }
 
 export const handleSplitPermissionList = async ({ splitPermissionList }) => {
@@ -23,6 +24,55 @@ export const handleSplitPermissionList = async ({ splitPermissionList }) => {
   const handleResult = { response: { status, result } }
   return handleResult
 }
+
+/* draftをmecabで変換 */
+export const handleSendDraft = async ({ accessToken, draft }) => {
+  const textConvertResponse = await mod.output.textConvertRequest(argNamed({
+    param: { accessToken, message: draft },
+    xdevkitSetting: mod.setting.xdevkitSetting.getList('api.API_VERSION', 'env.API_SERVER_ORIGIN', 'env.CLIENT_ID'),
+    lib: [mod.lib.postRequest],
+  }))
+
+  console.log({ result: textConvertResponse.data.result })
+
+  const status = mod.setting.browserServerSetting.getValue('statusList.OK')
+  const { parsedResult } = textConvertResponse.data.result.result
+
+  const promptWordList = []
+  const wordObjList = parsedResult.split('\n')
+  wordObjList.forEach((wordObj) => {
+    const wordList = wordObj.split(',')
+    if (wordList.length < 2) {
+      promptWordList.push(['\n'])
+      return
+    }
+    if (wordList[2] === '固有名詞') {
+      const wordCandidateList = [wordList[0]]
+      if (wordList[3] === '人名') {
+        wordCandidateList.push(mod.faker.person.firstName())
+        wordCandidateList.push(mod.faker.person.lastName())
+      } else if (wordList[3] === '地域') {
+        wordCandidateList.push(mod.faker.location.state())
+        wordCandidateList.push(mod.faker.location.city())
+      } else if (wordList[3] === '組織') {
+        wordCandidateList.push(mod.faker.company.name().replace(/株式会社|有限会社|合名会社|合資会社|合同会社/, ''))
+      }
+
+      wordCandidateList.push(mod.faker.word.noun())
+      wordCandidateList.push(mod.faker.word.noun())
+
+      promptWordList.push(wordCandidateList)
+    } else {
+      promptWordList.push([wordList[0]])
+    }
+  })
+
+  const result = { promptWordList }
+
+  const handleResult = { response: { status, result } }
+  return handleResult
+}
+
 
 /* promptをchatgptに登録。requestIdと生成したchatIdを返す。 */
 export const handlePromptSend = async ({ accessToken, prompt }) => {

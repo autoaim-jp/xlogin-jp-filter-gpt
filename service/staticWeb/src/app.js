@@ -8,6 +8,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import dotenv from 'dotenv'
+import { fakerJA as faker } from '@faker-js/faker'
 
 import xdevkit from './xdevkit-auth-router/src/app.js'
 import setting from './setting/index.js'
@@ -65,6 +66,10 @@ const _getActionRouter = () => {
   }))
   expressRouter.get(`${setting.browserServerSetting.getValue('apiEndpoint')}/response/list`, lookupResponseListHandler)
 
+  const sendDraftHandler = a.action.getHandlerSendDraft(argNamed({
+    core: [a.core.handleSendDraft, a.core.createResponse],
+  }))
+  expressRouter.post(`${setting.browserServerSetting.getValue('apiEndpoint')}/draft/send`, sendDraftHandler)
 
   return expressRouter
 }
@@ -90,7 +95,7 @@ const main = () => {
   dotenv.config()
   lib.init(axios, http, https, crypto, ulid)
   setting.init(process.env)
-  core.init(setting, output, input, lib)
+  core.init(setting, output, input, lib, faker)
 
   const expressApp = express()
   expressApp.use(_getOtherRouter())

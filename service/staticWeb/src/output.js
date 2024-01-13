@@ -1,5 +1,17 @@
 /* /output.js */
 
+export const textConvertRequest = ({
+  accessToken, CLIENT_ID, API_VERSION, API_SERVER_ORIGIN, postRequest, message,
+}) => {
+  const path = `/api/${API_VERSION}/text-lib/parse`
+  const param = {
+    message,
+  }
+
+  return postRequest(CLIENT_ID, accessToken, API_SERVER_ORIGIN, path, param)
+}
+
+
 export const promptSendRequest = ({
   accessToken, prompt, CLIENT_ID, API_VERSION, API_SERVER_ORIGIN, postRequest,
 }) => {
